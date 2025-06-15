@@ -1,5 +1,6 @@
 import hmac
 import hashlib
+import sys
 import os
 import time
 from plyer import notification
@@ -14,10 +15,18 @@ from typing import List, Dict
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
+# Add admin file to system path
+
 SECRET_KEY = b"4654365f-a510-47b4-a2b6-e2bf1993f0ef"
 
+SAVE_FOLDER = os.path.join(os.path.expanduser("~"), ".usbsentile")
+
+if not os.path.exists(SAVE_FOLDER):
+        os.mkdir(SAVE_FOLDER)
+
+
 logging.basicConfig(
-    filename="usb_sentinel.log",
+    filename=os.path.join(SAVE_FOLDER, "usb_sentinel.log"),
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
@@ -57,7 +66,7 @@ def start_usb_monitoring(usb_drive, usb_name, usb_serial):
 
 def init_database():
     """Initialize the database for tracking file transfers."""
-    conn = sqlite3.connect("usb_history.db")
+    conn = sqlite3.connect(os.path.join(SAVE_FOLDER, "usb_history.db"))
     cursor = conn.cursor()
     cursor.execute("""CREATE TABLE IF NOT EXISTS file_transfers (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -258,4 +267,6 @@ def monitor_usb_devices():
         print(f"[💥] Critical error: {e}")
 
 if __name__ == "__main__":
+    if not os.path.exists(SAVE_FOLDER):
+        os.mkdir(SAVE_FOLDER)
     monitor_usb_devices()

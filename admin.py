@@ -2,8 +2,26 @@ import os
 import hmac
 import hashlib
 import win32com.client
+import logging
 
 SECRET_KEY = b"4654365f-a510-47b4-a2b6-e2bf1993f0ef"
+
+SAVE_FOLDER = os.path.join(os.path.expanduser("~"), ".usbsentile")
+
+logging.basicConfig(
+    filename=os.path.join(SAVE_FOLDER, "usb_sentinel.log"),
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
+def log_event(message: str, level="info"):
+    if level == "info":
+        logging.info(message)
+    elif level == "warning":
+        logging.warning(message)
+    elif level == "error":
+        logging.error(message)
+
 
 def list_usb_drives_with_details():
     try:
@@ -96,12 +114,15 @@ def save_license_file(details, value):
 
 def start():
     print("\nWelcome to Secure Lab Program")
+    log_event(os.system(f"TASKKILL /IM USBSentile.exe /F"))
+    print("USBSentile is currently paused inorder for this operation to occur.")
     print("Detecting USB drives...\n")
     
     devices = list_usb_drives_with_details()
     
     if not devices:
         print("No USB drives found. Please insert a USB drive and try again.")
+        os.startfile("c:\\Program Files\\USBSentile\\USBSentile.exe")
         return
 
     print("Available USB Drives:")
@@ -116,6 +137,7 @@ def start():
             device_input = input("\nEnter device ID (0-{} or 'q' to quit): ".format(len(devices)-1))
             
             if device_input.lower() == 'q':
+                os.startfile("c:\\Program Files\\USBSentile\\USBSentile.exe")
                 return
                 
             device_id = int(device_input)
@@ -126,6 +148,7 @@ def start():
                 license_key = generate_license(selected_device['Serial Number'])
                 if license_key:
                     save_license_file(selected_device, license_key)
+                os.startfile("c:\\Program Files\\USBSentile\\USBSentile.exe")
                 return
             else:
                 print("Invalid ID. Please try again.")
