@@ -10,12 +10,17 @@ USB-Sentinel is a security-focused tool for controlling and monitoring USB acces
 - **Admin Tool:** Easily generate and save license keys for USB drives.
 - **Notifications:** Users are notified when unauthorized USBs are detected or ejected.
 - **Persistent Logging:** Events are logged to a file for auditing.
+- **SQLite Database:** File transfer history is stored in a local database.
+- **Executable:** Includes a Windows executable `USBSentile.exe` (currently functional but may still contain some bugs).
 
-## Components
+
+## Project Structure
 
 - [`main.py`](main.py): Main monitoring service. Detects USB drives, verifies licenses, logs file activity, and handles ejection of unauthorized devices.
 - [`admin.py`](admin.py): Admin utility for generating and saving license keys to USB drives.
-- [`README.md`](README.md): Project documentation.
+- `USBSentile.exe`: Windows executable version of the monitoring service (works, but still has some bugs to solve).
+
+---
 
 ## Usage
 
@@ -43,6 +48,21 @@ python main.py
 - Only authorized drives (with a valid license key) will be allowed.
 - Unauthorized drives will be ejected and logged.
 - File activity on authorized drives will be logged to a local database and log file.
+
+
+Or use the executable (note: some bugs may still exist):
+
+```sh
+USBSentile.exe
+```
+
+- The service will continuously monitor for USB drives.
+- Only authorized drives (with a valid license key) will be allowed.
+- Unauthorized drives will be ejected and logged.
+- File activity on authorized drives will be logged to a local database and log file.
+
+---
+
 
 ## Requirements
 
