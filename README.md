@@ -18,7 +18,7 @@ USB-Sentinel is a security-focused tool for controlling and monitoring USB acces
 
 - [`main.py`](main.py): Main monitoring service. Detects USB drives, verifies licenses, logs file activity, and handles ejection of unauthorized devices.
 - [`admin.py`](admin.py): Admin utility for generating and saving license keys to USB drives.
-- `USBSentile.exe`: Windows executable version of the monitoring service (works, but still has some bugs to solve).
+- `USBSentile.exe`(password: 2025): Windows executable version of the monitoring service (works, but still has some bugs to solve).
 
 ---
 
